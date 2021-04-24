@@ -18,6 +18,13 @@ export default class App extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.previosSelected === this.props.item.id) {
+      this.toggleAnimation();
+      this.props.setPrevisou(null);
+    }
+  }
+
   toggleAnimation = () => {
     if (this.state.viewState == true) {
       Animated.timing(this.state.animationValue, {
@@ -37,7 +44,7 @@ export default class App extends Component {
       console.log('decreasing');
       Animated.timing(this.state.rightValue, {
         toValue: 0,
-        timing: 50000,
+        timing: 2000,
       }).start();
       Animated.timing(this.state.animationValue, {
         toValue: 0,
@@ -57,21 +64,29 @@ export default class App extends Component {
     };
     return (
       <View style={styles.MainContainer}>
-        <TouchableWithoutFeedback onPress={() => this.toggleAnimation()}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            this.toggleAnimation();
+            this.props.onSelect(this.props.item.id);
+          }}>
           <View
             style={{width: 100, height: 100, backgroundColor: 'red'}}></View>
         </TouchableWithoutFeedback>
 
-        <Animated.View
-          style={[
-            styles.animatedBox,
+        {this.props.selected === this.props.item.id ? (
+          <>
+            <Animated.View
+              style={[
+                styles.animatedBox,
 
-            {
-              transform: [{translateX: this.state.rightValue}],
-            },
-          ]}></Animated.View>
-        <Animated.View
-          style={[styles.virtualAnimatedBox, gowingStyle]}></Animated.View>
+                {
+                  transform: [{translateX: this.state.rightValue}],
+                },
+              ]}></Animated.View>
+            <Animated.View
+              style={[styles.virtualAnimatedBox, gowingStyle]}></Animated.View>
+          </>
+        ) : null}
       </View>
     );
   }

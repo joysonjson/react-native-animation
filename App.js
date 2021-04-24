@@ -32,6 +32,19 @@ const Item = ({title}) => (
 
 const App = () => {
   const renderItem = ({item}) => <Item title={item.title} />;
+  const [clicked, setClicked] = React.useState(false);
+  const [refresh, setRefresh] = React.useState(false);
+  const [previosSelected, setPreviousSelected] = React.useState(null);
+
+  const toggle = index => {
+    if (clicked === index) {
+      //if clicked question is already active, then close it
+      return setClicked(null);
+    }
+
+    setPreviousSelected(clicked);
+    setClicked(index);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -39,7 +52,16 @@ const App = () => {
         style={{height: 200}}
         horizontal={true}
         data={DATA}
-        renderItem={() => <AnimaeBox />}
+        renderItem={data => (
+          <AnimaeBox
+            selected={clicked}
+            item={data.item}
+            index={data.index}
+            onSelect={ind => toggle(ind)}
+            previosSelected={previosSelected}
+            setPrevisou={val => setPreviousSelected(val)}
+          />
+        )}
         keyExtractor={item => item.id}
       />
       {/* <AnimaeBox /> */}
