@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -33,7 +33,7 @@ const Item = ({title}) => (
 const App = () => {
   const renderItem = ({item}) => <Item title={item.title} />;
   const [clicked, setClicked] = React.useState(false);
-  const [refresh, setRefresh] = React.useState(false);
+  const [first, setFirst] = React.useState();
   const [previosSelected, setPreviousSelected] = React.useState(null);
 
   const toggle = index => {
@@ -41,11 +41,19 @@ const App = () => {
       //if clicked question is already active, then close it
       return setClicked(null);
     }
-
     setPreviousSelected(clicked);
     setClicked(index);
   };
+  const setFirstId = id => {
+    setClicked(id);
+    setPreviousSelected(null);
+    setFirst(id);
+  };
 
+  useEffect(() => {
+    // toggle('bd7acbea-c1b1-46c2-aed5-3ad53abb28ba');
+    setFirstId('bd7acbea-c1b1-46c2-aed5-3ad53abb28ba');
+  }, [first]);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

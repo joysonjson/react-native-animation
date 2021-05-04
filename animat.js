@@ -15,9 +15,17 @@ export default class App extends Component {
       animationValue: new Animated.Value(0),
       viewState: true,
       rightValue: new Animated.Value(0),
+      isFirst: true,
     };
   }
+  componentDidMount() {
+    if (this.props.index === 0 && this.state.isFirst) {
+      console.log('Updaing the component componentDidMount');
 
+      this.toggleAnimation();
+      this.setState({isFirst: false});
+    }
+  }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.previosSelected === this.props.item.id) {
       this.toggleAnimation();
@@ -62,6 +70,7 @@ export default class App extends Component {
     const gowingStyle = {
       width: this.state.animationValue,
     };
+
     return (
       <View style={styles.MainContainer}>
         <TouchableWithoutFeedback
